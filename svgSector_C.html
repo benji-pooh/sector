@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Copyright 2017- Matthew Paul Cottam
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+        http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License. -->
+    <meta charset="UTF-8">
+    <meta name="description" content="SVG Sector Generator">
+    <meta name="keywords" content="SVG,Sector,Circle,Polygon,Arc,Pie,Concentric">
+    <meta name="author" content="Matt Cottam, Modified by Ben Phillips">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Sector Generator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=AR+One+Sans&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap">
+</head>
+
+<body>
+    <div class="titleBar">SECTOR</div>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        .titleBar {
+            display: table;
+            /* width: 800px; */
+            background-color: rgba(144, 238, 144, 0);
+            padding: 5px;
+            border-radius: 107px;
+            border: 1px solid black;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            font-size: 22px;
+            font-weight: bold;
+            top: 0px;
+            flex-wrap: nowrap;
+            align-content: flex-end;
+            align-self: baseline;
+            font-family: 'Fira Sans', sans-serif;
+            outline: 6px;
+            background-image: linear-gradient(145deg, rgb(28, 28, 28) 0%, rgb(79, 83, 112) 98%);
+        }
+        
+        .controlBar {
+            display: table;
+            /* width: 800px */
+            background-color: #56595a;
+            padding-top: 5px;
+            padding-left: 5px;
+            border-radius: 8px;
+            border: 1px solid black;
+            margin-bottom: 5px;
+            margin-left: 5px;
+        }
+        
+        .aboutCell {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .svgDiv {
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 5px;
+            float: left;
+            height: 500px;
+            width: 500px;
+        }
+        
+        .svgSaveButton {
+            position: relative;
+            top: 0px;
+            left: 0px;
+        }
+        
+        .inputBox {
+            width: 30px;
+        }
+        
+        button {
+            padding: 1px;
+            margin: 1px;
+            font-style: normal;
+            font-variant: normal;
+            font-family: 'Fira Sans', sans-serif;
+            font-size: 16px;
+            line-height: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-indent: 1px;
+            text-decoration: none;
+            text-transform: capitalize;
+            text-align: center;
+            background: linear-gradient(12deg, #FC354C 0%, #0ABFBC 100%);
+            background-repeat: no-repeat;
+            background-size: 224px;
+            background-position: -5px;
+            background-attachment: scroll;
+            background-origin: initial;
+            background-clip: border-box;
+            border-width: 2px;
+            border-radius: 48px;
+            border-color: #41454a;
+        }
+        
+        input[type="number"] {
+            width: 41px;
+            border-radius: 7px;
+            border-width: 2px;
+            border-color: #0047d2;
+            outline: 1px solid #cccccc;
+            outline-offset: -1px;
+            text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.66);
+            font-style: normal;
+            font-family: 'Fira Code', monospace;
+            letter-spacing: -1px;
+            font-weight: 700;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+            text-align: justify;
+            cursor: text;
+        }
+        
+        .svgOutputDivOuter {
+            float: left;
+            text-align: center;
+        }
+        
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+    </style>
+    <script>
+        var aboutBox = "<!DOCTYPE html>" + '<html><head><meta charset="utf-8"><title>SVG Sectors</title><style type="text/css">body{font-family: sans-serif;}.aboutBox {display:table;/*width: 800px;*/background-color: lightblue;padding-top: 5px;padding-left: 5px;border-radius: 5px;border: 1px solid black;margin-bottom: 20px;width: auto;height: auto;margin: 0 auto;padding: 10px;position: relative;text-align: center;}.svgDiv {border: 1px solid black;border-radius: 5px;margin: 5px;height: 500px;width:500px;margin: 0 auto;position: relative;}</style></head><body><div class="aboutBox">SVG Sector Maker<br><br>Written in Javascript by Matt Cottam<br><br>Ctrl + Shift + R  will clear all boxes ( and possibly kill some bugs ! )<br><br>Some browsers may ask before saving more than 1 file<br><br>The saved SVG images can be opened / scaled / modified in any SVG editor<br><br>I use <a target="_blank" href="http://www.inkscape.org">Inkscape</a></div><br>' + "" + "<br>" + "<br>" + '<div style="width:100hw;text-align:center;">' + "" + '<svg width="500" height="500" fill="none" stroke-width="1px"><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(190,26,87)" d="M 427,250  L 360.357694929383,388.3841723965325 L 210.613794690698,422.5622404564032 L 90.52851038191648,326.79742182514644 L 90.52851038041229,173.20257817797705 L 210.61379468731823,77.43775954436822 L 360.35769492667254,111.61582760130597z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(205,11,8)" d="M 411,250  L 350.3818580996083,375.87486867707196 L 214.17412963391175,406.96339386147406 L 104.94401226829692,319.8552819991445 L 104.9440122669287,180.14471800369662 L 214.17412963083748,93.03660613922759 L 350.3818580971428,124.12513132096193z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(148,195,106)" d="M 395,250  L 340.40602126983356,363.36556495761135 L 217.7344645771255,391.36454726654495 L 119.35951415467736,312.91314217314255 L 119.3595141534451,187.0868578294162 L 217.73446457435674,108.63545273408698 L 340.40602126761314,136.6344350406179z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(233,42,13)" d="M 379,250  L 330.43018444005884,350.8562612381508 L 221.29479952033924,375.7657006716159 L 133.77501604105777,305.9710023471406 L 133.77501603996149,194.0289976551358 L 221.294799517876,124.23429932894634 L 330.4301844380834,149.14373876027383z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(226,228,130)" d="M 363,250  L 320.45434761028406,338.34695751869026 L 224.855134463553,360.1668540766868 L 148.1905179274382,299.0288625211387 L 148.19051792647792,200.9711374808554 L 224.85513446139527,139.83314592380572 L 320.4543476085537,161.6530424799298z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(145,20,43)" d="M 347,250  L 310.47851078050934,325.83765379922966 L 228.4154694067667,344.56800748175766 L 162.60601981381865,292.08672269513676 L 162.6060198129943,207.91327730657497 L 228.41546940491452,155.43199251866508 L 310.47851077902396,174.16234619958576z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(162,89,22)" d="M 331,250  L 300.5026739507346,313.3283500797691 L 231.97580434998045,328.9691608868286 L 177.02152170019906,285.1445828691348 L 177.0215216995107,214.85541713229458 L 231.97580434843377,171.03083911352445 L 300.50267394949424,186.6716499192417z"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(190,26,87)" d="M 427,250  A 101 101 0 0 1 360.357694929383,388.3841723965325 A 101 101 0 0 1 210.613794690698,422.5622404564032 A 101 101 0 0 1 90.52851038191648,326.79742182514644 A 101 101 0 0 1 90.52851038041229,173.20257817797705 A 101 101 0 0 1 210.61379468731823,77.43775954436822 A 101 101 0 0 1 360.35769492667254,111.61582760130597 A 101 101 0 0 1 427,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(205,11,8)" d="M 411,250  A 85 85 0 0 1 350.3818580996083,375.87486867707196 A 85 85 0 0 1 214.17412963391175,406.96339386147406 A 85 85 0 0 1 104.94401226829692,319.8552819991445 A 85 85 0 0 1 104.9440122669287,180.14471800369662 A 85 85 0 0 1 214.17412963083748,93.03660613922759 A 85 85 0 0 1 350.3818580971428,124.12513132096193 A 85 85 0 0 1 411,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(148,195,106)" d="M 395,250  A 69 69 0 0 1 340.40602126983356,363.36556495761135 A 69 69 0 0 1 217.7344645771255,391.36454726654495 A 69 69 0 0 1 119.35951415467736,312.91314217314255 A 69 69 0 0 1 119.3595141534451,187.0868578294162 A 69 69 0 0 1 217.73446457435674,108.63545273408698 A 69 69 0 0 1 340.40602126761314,136.6344350406179 A 69 69 0 0 1 395,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(233,42,13)" d="M 379,250  A 53 53 0 0 1 330.43018444005884,350.8562612381508 A 53 53 0 0 1 221.29479952033924,375.7657006716159 A 53 53 0 0 1 133.77501604105777,305.9710023471406 A 53 53 0 0 1 133.77501603996149,194.0289976551358 A 53 53 0 0 1 221.294799517876,124.23429932894634 A 53 53 0 0 1 330.4301844380834,149.14373876027383 A 53 53 0 0 1 379,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(226,228,130)" d="M 363,250  A 37 37 0 0 1 320.45434761028406,338.34695751869026 A 37 37 0 0 1 224.855134463553,360.1668540766868 A 37 37 0 0 1 148.1905179274382,299.0288625211387 A 37 37 0 0 1 148.19051792647792,200.9711374808554 A 37 37 0 0 1 224.85513446139527,139.83314592380572 A 37 37 0 0 1 320.4543476085537,161.6530424799298 A 37 37 0 0 1 363,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(145,20,43)" d="M 347,250  A 21 21 0 0 1 310.47851078050934,325.83765379922966 A 21 21 0 0 1 228.4154694067667,344.56800748175766 A 21 21 0 0 1 162.60601981381865,292.08672269513676 A 21 21 0 0 1 162.6060198129943,207.91327730657497 A 21 21 0 0 1 228.41546940491452,155.43199251866508 A 21 21 0 0 1 310.47851077902396,174.16234619958576 A 21 21 0 0 1 347,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(162,89,22)" d="M 331,250  A 5 5 0 0 1 300.5026739507346,313.3283500797691 A 5 5 0 0 1 231.97580434998045,328.9691608868286 A 5 5 0 0 1 177.02152170019906,285.1445828691348 A 5 5 0 0 1 177.0215216995107,214.85541713229458 A 5 5 0 0 1 231.97580434843377,171.03083911352445 A 5 5 0 0 1 300.50267394949424,186.6716499192417 A 5 5 0 0 1 331,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(190,26,87)" d="M 427,250  A 101 101 0 0 0 360.357694929383,388.3841723965325 A 101 101 0 0 0 210.613794690698,422.5622404564032 A 101 101 0 0 0 90.52851038191648,326.79742182514644 A 101 101 0 0 0 90.52851038041229,173.20257817797705 A 101 101 0 0 0 210.61379468731823,77.43775954436822 A 101 101 0 0 0 360.35769492667254,111.61582760130597 A 101 101 0 0 0 427,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(205,11,8)" d="M 411,250  A 85 85 0 0 0 350.3818580996083,375.87486867707196 A 85 85 0 0 0 214.17412963391175,406.96339386147406 A 85 85 0 0 0 104.94401226829692,319.8552819991445 A 85 85 0 0 0 104.9440122669287,180.14471800369662 A 85 85 0 0 0 214.17412963083748,93.03660613922759 A 85 85 0 0 0 350.3818580971428,124.12513132096193 A 85 85 0 0 0 411,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(148,195,106)" d="M 395,250  A 69 69 0 0 0 340.40602126983356,363.36556495761135 A 69 69 0 0 0 217.7344645771255,391.36454726654495 A 69 69 0 0 0 119.35951415467736,312.91314217314255 A 69 69 0 0 0 119.3595141534451,187.0868578294162 A 69 69 0 0 0 217.73446457435674,108.63545273408698 A 69 69 0 0 0 340.40602126761314,136.6344350406179 A 69 69 0 0 0 395,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(233,42,13)" d="M 379,250  A 53 53 0 0 0 330.43018444005884,350.8562612381508 A 53 53 0 0 0 221.29479952033924,375.7657006716159 A 53 53 0 0 0 133.77501604105777,305.9710023471406 A 53 53 0 0 0 133.77501603996149,194.0289976551358 A 53 53 0 0 0 221.294799517876,124.23429932894634 A 53 53 0 0 0 330.4301844380834,149.14373876027383 A 53 53 0 0 0 379,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(226,228,130)" d="M 363,250  A 37 37 0 0 0 320.45434761028406,338.34695751869026 A 37 37 0 0 0 224.855134463553,360.1668540766868 A 37 37 0 0 0 148.1905179274382,299.0288625211387 A 37 37 0 0 0 148.19051792647792,200.9711374808554 A 37 37 0 0 0 224.85513446139527,139.83314592380572 A 37 37 0 0 0 320.4543476085537,161.6530424799298 A 37 37 0 0 0 363,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(145,20,43)" d="M 347,250  A 21 21 0 0 0 310.47851078050934,325.83765379922966 A 21 21 0 0 0 228.4154694067667,344.56800748175766 A 21 21 0 0 0 162.60601981381865,292.08672269513676 A 21 21 0 0 0 162.6060198129943,207.91327730657497 A 21 21 0 0 0 228.41546940491452,155.43199251866508 A 21 21 0 0 0 310.47851077902396,174.16234619958576 A 21 21 0 0 0 347,250"></path><path stroke="rgb(0,0,0)" fill-opacity="0.5" fill="rgb(162,89,22)" d="M 331,250  A 5 5 0 0 0 300.5026739507346,313.3283500797691 A 5 5 0 0 0 231.97580434998045,328.9691608868286 A 5 5 0 0 0 177.02152170019906,285.1445828691348 A 5 5 0 0 0 177.0215216995107,214.85541713229458 A 5 5 0 0 0 231.97580434843377,171.03083911352445 A 5 5 0 0 0 300.50267394949424,186.6716499192417 A 5 5 0 0 0 331,250"></path></svg>' + "" + "</div>" + "" + "</body></html>" + "";
+
+        function about(x, y) {
+            var myWindow = window.open("", "NotePad");
+            myWindow.document.write(aboutBox + "<br>")
+        }
+
+        function download(filename, data) {
+            var blob = new Blob([data], {
+                type: "image/svg+xml"
+            });
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, filename)
+            } else {
+                var elem = window.document.createElement("a");
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = filename;
+                document.body.appendChild(elem);
+                elem.click();
+                document.body.removeChild(elem)
+            }
+        }
+
+        function multiDownload() {
+            download("outputSector.svg", document.getElementById("svgOutputDiv").innerHTML);
+            setTimeout(function() {
+                download("outputConcentric.svg", document.getElementById("svgOutputDiv2").innerHTML)
+            }, 1e3)
+        }
+
+        function calcCirclePoints() {
+            var step = eval(document.getElementById("concentricStepInput").value);
+            var stepSize = eval(document.getElementById("concentricStepSizeInput").value);
+            var arcRadius = "";
+            var r = "";
+            var svgPolygon = "";
+            var svgPolygonSet = "";
+            var svgPolyArc = "";
+            var svgPolyArcSet = "";
+            var svgPolyInnerArcSet = "";
+            for (c = 0; c < step; c++) {
+                var svgPolygon = "";
+                var svgPolyArc = "";
+                var svgPolyInnerArc = "";
+                var cx = 250;
+                var cy = 250;
+                r = document.getElementById("radiusInput").value - c * stepSize;
+                var s = eval(document.getElementById("numberOfSectorsInput").value);
+                arcRadius = eval(document.getElementById("arcRadiusInput").value) - c * stepSize;
+                var pointsArray = [];
+                if (arcRadius < 0) {
+                    break
+                }
+                if (r < 0) {
+                    break
+                }
+                for (j = 0; j < s; j++) {
+                    var a = 6.28318530716 / s * j;
+                    var x = cx + r * Math.cos(a);
+                    var y = cy + r * Math.sin(a);
+                    pointsArray[j] = [x, y]
+                }
+                for (p = 1; p < pointsArray.length; p++) {
+                    if (document.getElementById("polygonCheckbox").checked == true) {
+                        svgPolygon = svgPolygon + " L " + pointsArray[p]
+                    }
+                    if (document.getElementById("arcCheckbox").checked == true) {
+                        svgPolyArc = svgPolyArc + " A " + arcRadius + " " + arcRadius + " 0 0 1 " + pointsArray[p]
+                    }
+                    if (document.getElementById("innerArcCheckbox").checked == true) {
+                        svgPolyInnerArc = svgPolyInnerArc + " A " + arcRadius + " " + arcRadius + " 0 0 0 " + pointsArray[p]
+                    }
+                }
+                if (document.getElementById("randomStrokeColourCheckbox").checked == true) {
+                    var rgb1s = Math.floor(255 * Math.random() + 1);
+                    var rgb2s = Math.floor(255 * Math.random() + 1);
+                    var rgb3s = Math.floor(255 * Math.random() + 1);
+                    var rgbs = 'stroke="rgb(' + rgb1s + "," + rgb2s + "," + rgb3s + ')"';
+                    console.log(rgbs)
+                } else if (document.getElementById("noStrokeCheckbox").checked == true) {
+                    var rgbs = 'stroke="none"'
+                } else {
+                    var rgbs = 'stroke="rgb(0,0,0)"'
+                }
+                if (document.getElementById("randomFillColourCheckbox").checked == true) {
+                    var rgb1f = Math.floor(255 * Math.random() + 1);
+                    var rgb2f = Math.floor(255 * Math.random() + 1);
+                    var rgb3f = Math.floor(255 * Math.random() + 1);
+                    var rgbf = 'fill-opacity="0.5" fill="rgb(' + rgb1f + "," + rgb2f + "," + rgb3f + ')"'
+                } else {
+                    var rgbf = ""
+                }
+                if (document.getElementById("arcCheckbox").checked == true) {
+                    svgPolyArcSet = svgPolyArcSet + "<path " + rgbs + rgbf + 'd="M ' + pointsArray[0] + " " + svgPolyArc + " A " + arcRadius + " " + arcRadius + " 0 0 1 " + pointsArray[0] + '"></path>'
+                }
+                if (document.getElementById("innerArcCheckbox").checked == true) {
+                    svgPolyInnerArcSet = svgPolyInnerArcSet + "<path " + rgbs + rgbf + 'd="M ' + pointsArray[0] + " " + svgPolyInnerArc + " A " + arcRadius + " " + arcRadius + " 0 0 0 " + pointsArray[0] + '"></path>'
+                }
+                if (document.getElementById("polygonCheckbox").checked == true) {
+                    svgPolygonSet = svgPolygonSet + "<path " + rgbs + rgbf + 'd="M ' + pointsArray[0] + " " + svgPolygon + 'z"></path>'
+                }
+            }
+            document.getElementById("svgOutputDiv2").innerHTML = '<svg width="500" height="500" fill="none" stroke-width="1px" >' + svgPolygonSet + svgPolyArcSet + svgPolyInnerArcSet + "</svg>"
+        }
+
+        function drawSectors() {
+            var cx = 250;
+            var cy = 250;
+            var r = document.getElementById("radiusInput").value;
+            var s = eval(document.getElementById("numberOfSectorsInput").value);
+            var arcRadius = eval(document.getElementById("arcRadiusInput").value);
+            var polySvg = "";
+            var arcSvg = "";
+            var innerArcSvg = "";
+            for (var i = s; i > 0; i--) {
+                var a = 6.28318530716 / s * i;
+                var b = 6.28318530716 / s * (i + 1);
+                var x1 = cx + r * Math.cos(a);
+                var y1 = cy + r * Math.sin(a);
+                var x2 = cx + r * Math.cos(b);
+                var y2 = cy + r * Math.sin(b);
+                if (document.getElementById("randomStrokeColourCheckbox").checked == true) {
+                    var rgb1s = Math.floor(255 * Math.random() + 1);
+                    var rgb2s = Math.floor(255 * Math.random() + 1);
+                    var rgb3s = Math.floor(255 * Math.random() + 1);
+                    var rgbs = 'stroke="rgb(' + rgb1s + "," + rgb2s + "," + rgb3s + ')"';
+                    console.log(rgbs)
+                } else if (document.getElementById("noStrokeCheckbox").checked == true) {
+                    var rgbs = 'stroke="none"'
+                } else {
+                    var rgbs = 'stroke="rgb(0,0,0)"'
+                }
+                if (document.getElementById("randomFillColourCheckbox").checked == true) {
+                    var rgb1f = Math.floor(255 * Math.random() + 1);
+                    var rgb2f = Math.floor(255 * Math.random() + 1);
+                    var rgb3f = Math.floor(255 * Math.random() + 1);
+                    var rgbf = 'fill-opacity="0.5" fill="rgb(' + rgb1f + "," + rgb2f + "," + rgb3f + ')"'
+                } else {
+                    var rgbf = ""
+                }
+                if (document.getElementById("polygonCheckbox").checked == true) {
+                    polySvg = polySvg + "<path " + rgbf + rgbs + ' d="M 250 250 L' + x1 + " " + y1 + " " + x2 + " " + y2 + 'z"/>'
+                }
+                if (document.getElementById("arcCheckbox").checked == true) {
+                    arcSvg = arcSvg + "<path " + rgbf + rgbs + ' d="M 250 250 L' + x1 + " " + y1 + " " + "A " + arcRadius + " " + arcRadius + " 0 0 1 " + x2 + " " + y2 + 'z"/>'
+                }
+                if (document.getElementById("innerArcCheckbox").checked == true) {
+                    innerArcSvg = innerArcSvg + "<path " + rgbf + rgbs + ' d="M 250 250 L' + x1 + " " + y1 + " " + "A " + arcRadius + " " + arcRadius + " 0 0 0 " + x2 + " " + y2 + 'z"/>'
+                }
+            }
+            document.getElementById("svgOutputDiv").innerHTML = '<svg width="500" height="500" fill="none" stroke-width="1px">' + '<g id="polygon">' + polySvg + "</g>" + '<g id="innerArc">' + innerArcSvg + "</g>" + '<g id="arc">' + arcSvg + "</g></svg>"
+        }
+
+        function updateRange(rangeSlider) {
+            document.getElementById(rangeSlider.id.split("Range")[0]).value = rangeSlider.value
+        }
+
+        function updateImage() {
+            drawSectors();
+            calcCirclePoints()
+        }
+        document.addEventListener("input", function(oninput) {
+            updateImage()
+        });
+    </script>
+    <div class="controlBar">
+        <table>
+            <tr>
+                <td style="font-size: 12px; line-height: 15px; color: #000000; letter-spacing: 1px; text-indent: 0px; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; background-repeat: no-repeat; border-radius: 0px; outline: 0px; outline-offset: 0px; border-width: 0px; flex-grow: 1; box-shadow: 0px 0px 8px -20px rgba(0, 0, 0, 0.86); perspective: 0px; font-family: 'Fira Mono', monospace;">Radius &nbsp;
+                    <input id="radiusInputRange" type="range" min="1" max="250" value="150" oninput="updateRange(this);"><br>
+                    <input id="radiusInput" type="number" class="inputBox" value="150" min="1" length="3">
+                </td>
+                <td style="font-size: 12px; line-height: 15px; color: #000000; letter-spacing: 1px; text-indent: 0px; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; background-repeat: no-repeat; border-radius: 0px; outline: 0px; outline-offset: 0px; border-width: 0px; flex-grow: 1; box-shadow: 0px 0px 8px -20px rgba(0, 0, 0, 0.86); perspective: 0px; font-family: 'Fira Mono', monospace;">Arc Radius &nbsp;
+                    <input id="arcRadiusInputRange" type="range" min="1" max="1000" oninput="updateRange(this);"><br>
+                    <input id="arcRadiusInput" type="number" class="inputBox" value="150" min="1">
+                </td>
+                <td style="font-size: 12px; line-height: 15px; color: #000000; letter-spacing: 1px; text-indent: 0px; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; background-repeat: no-repeat; border-radius: 0px; outline: 0px; outline-offset: 0px; border-width: 0px; flex-grow: 1; box-shadow: 0px 0px 8px -20px rgba(0, 0, 0, 0.86); perspective: 0px; font-family: 'Fira Mono', monospace;">Sectors &nbsp;
+                    <input id="numberOfSectorsInputRange" type="range" min="1" max="500" value="10" oninput="updateRange(this);" style="background: 6px; border-top-left-radius: 0px; border-width: 0px; outline: none; column-rule: 1px;"><br>
+                    <input id="numberOfSectorsInput" type="number" class="inputBox" value="10" min="1">
+                </td>
+                <td style="font-size: 12px; line-height: 15px; color: #000000; letter-spacing: 1px; text-indent: 0px; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; background-repeat: no-repeat; border-radius: 0px; outline: 0px; outline-offset: 0px; border-width: 0px; flex-grow: 1; box-shadow: 0px 0px 8px -20px rgba(0, 0, 0, 0.86); perspective: 0px; font-family: 'Fira Mono', monospace;">Concentric Steps &nbsp;
+                    <input id="concentricStepInputRange" type="range" min="1" max="1000" value="15" oninput="updateRange(this);"><br>
+                    <input id="concentricStepInput" type="number" class="inputBox" value="15" min="1">
+                </td>
+                <td style="font-size: 12px; line-height: 15px; color: #000000; letter-spacing: 1px; text-indent: 0px; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; background-repeat: no-repeat; border-radius: 0px; outline: 0px; outline-offset: 0px; border-width: 0px; flex-grow: 1; box-shadow: 0px 0px 8px -20px rgba(0, 0, 0, 0.86); perspective: 0px; font-family: 'Fira Mono', monospace;">Concentric Step Size &nbsp;
+                    <input id="concentricStepSizeInputRange" type="range" min="1" max="1000" value="10" oninput="updateRange(this);"><br>
+                    <input id="concentricStepSizeInput" type="number" class="inputBox" value="10" min="1">
+                </td>
+                <td>
+                    <button onclick="calcCirclePoints();drawSectors();">Redraw</button>
+                    <button onclick="multiDownload()">Save All as SVG</button>
+                </td>
+                <td class="aboutCell">
+                    <button onclick="about();">About</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" style="font-family: 'Fira Sans', sans-serif; font-size: 18px; font-weight: 400; color: rgba(0, 0, 0, 0.84); letter-spacing: 2px; font-style: normal; font-variant: normal; text-decoration: none; text-align: left; line-height: 23px;">
+                    Polygon
+
+                    <input type="checkbox" id="polygonCheckbox" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);"> Arc
+
+                    <input type="checkbox" id="arcCheckbox" checked="true" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);"> Inner Arc
+
+                    <input type="checkbox" id="innerArcCheckbox" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);"> Randomized Stroke
+
+                    <input type="checkbox" id="randomStrokeColourCheckbox" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);"> Randomized Fill
+
+                    <input type="checkbox" id="randomFillColourCheckbox" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);"> No Stroke
+
+                    <input type="checkbox" id="noStrokeCheckbox" style="color: #000000; font-style: normal; border-top-left-radius: 0px; border-width: 0px; box-shadow: 0px 1px 21px rgba(0, 0, 0, 0.58);">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="svgOutputDivOuter">
+        <div id="svgOutputDiv" class="svgDiv"></div>
+        <br>
+        <button onclick="download('outputSector.svg',document.getElementById('svgOutputDiv').innerHTML)">Save Sectors(SVG)</button>
+    </div>
+    <div class="svgOutputDivOuter">
+        <div id="svgOutputDiv2" class="svgDiv"></div>
+        <br>
+        <button onclick="download('outputConcentric.svg',document.getElementById('svgOutputDiv2').innerHTML)">Save Concentric(SVG)</button>
+    </div>
+    <script>
+        document.onload = updateImage();
+    </script>
+</body>
+
+</html>
